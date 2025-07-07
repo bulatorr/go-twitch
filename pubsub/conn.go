@@ -69,7 +69,10 @@ const IP = "pubsub-edge.twitch.tv"
 // Connect to the PubSub server
 func (conn *Conn) Connect() error {
 	u := url.URL{Scheme: "wss", Host: IP, Path: "/v1"}
-	socket, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	socket, resp, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if resp != nil {
+		resp.Body.Close()
+	}
 	if err != nil {
 		return err
 	}
